@@ -3,10 +3,8 @@ package miniProject.dao;
 import com.kh.jdbc.util.Common;
 import miniProject.vo.ordersVO;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,6 +12,7 @@ import java.util.Scanner;
 public class ordersDao {
     Connection conn = null;
     Statement stmt = null;
+    PreparedStatement pStmt = null;
     ResultSet rs = null;
     Scanner sc = new Scanner(System.in);
 
@@ -28,7 +27,7 @@ public class ordersDao {
             while(rs.next()){
                 String order_id = rs.getNString("ORDER_ID");
                 String customer_id = rs.getNString("CUSTOMER_ID");
-                int total_cost = rs.getInt("TOTAL_COST");
+                BigDecimal total_cost = rs.getBigDecimal("TOTAL_COST");
                 Date date = rs.getDate("ORDER_DATE");
                 String payment_method = rs.getNString("PAYMENT_METHOD");
                 String shipping_address = rs.getNString("SHIPPING_ADDRESS");
@@ -39,7 +38,7 @@ public class ordersDao {
             Common.close((stmt));
             Common.close(conn);
 
-            } catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
         return list;
@@ -58,26 +57,28 @@ public class ordersDao {
     public void ordersInsert(){
         System.out.print(" 주문정보를 입력하세요. ");
         System.out.print(" 주문ID : ");
-        String order_id = sc.next();
+        String ORDER_ID = sc.next();
         System.out.println("고객ID : ");
-        String customer_id = sc.next();
+        String CUSTOMER_ID = sc.next();
         System.out.println("총합가격 : ");
-        int total_cost = sc.nextInt();
-        System.out.println("주문일자 : ");
-        String order_date = sc.next();
+        BigDecimal TOTAL_COST = sc.nextBigDecimal();
         System.out.println("결제방법 : ");
-        String payment_method = sc.next();
+        String PAYMENT_METHOD = sc.next();
         System.out.println("배송지 : ");
-        String shippping_address = sc.next();
+        String SHIPPING_ADDRESS = sc.next();
 
-        String sql = "INSERT INTO ORDERS(ORDER_ID, CUSTOMER_ID, TOTAL_COST, ORDER_DATE, PAYMENT_METHOD, SHIPPING_ADDRESS) VALUES ("
-                + "'" + order_id + "'" + ", " + "'" + customer_id + "'" + ", " + total_cost + ", " +
-                "'" + order_date + "'" + ", " + "'" + payment_method + "'" + ", " + "'" + shippping_address + "'" + ")";
+        String sql = "INSERT INTO ORDERS(ORDER_ID, CUSTOMER_ID, TOTAL_COST, ORDER_DATE, PAYMENT_METHOD, SHIPPING_ADDRESS) VALUES (?,?,?,SYSDATE,?,?)";
 
         try{
             conn = Common.getConnection();
-            stmt = conn.createStatement();
-            int ret = stmt.executeUpdate(sql);
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, ORDER_ID);
+            pStmt.setString(2, CUSTOMER_ID);
+            pStmt.setBigDecimal(3, TOTAL_COST);
+            pStmt.setString(4,PAYMENT_METHOD);
+            pStmt.setString(5, SHIPPING_ADDRESS);
+
+            int ret = pStmt.executeUpdate();
             System.out.println("Return : " + ret);
         } catch(Exception e){
             e.printStackTrace();
@@ -85,5 +86,44 @@ public class ordersDao {
         Common.close(stmt);
         Common.close(conn);
 
+    }
+
+    public void ordersUpdate(){
+        System.out.println("변경할 고객ID를 입력 하세요 : ");
+        String ORDER_ID = sc.next();
+        System.out.print("결제 방법 : ");
+        String PAYMENT_METHOD = sc.next();
+        System.out.print("배송지 : ");
+        String SHIPPING_ADDRESS = sc.next();
+
+        String sql = "UPDATE ORDERS SET PAYMENT_METHOD = ?, SHIPPING_ADDRESS = ? WHERE ORDER_ID = ?";
+
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1,PAYMENT_METHOD);
+            pStmt.setString(2,SHIPPING_ADDRESS);
+            pStmt.setString(3,ORDER_ID);
+            pStmt.executeUpdate();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+    }
+    public void ordersDelete(){
+        System.out.print("삭제할 ID를 입력하세요 : ");
+        String ORDER_ID = sc.next();
+        String sql = "DELETE FROM EMP WHERE ORDER_ID = ?";
+
+        try{
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, ORDER_ID);
+            pStmt.executeUpdate();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
