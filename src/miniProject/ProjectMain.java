@@ -13,7 +13,7 @@ public class ProjectMain {
         while(true){
             System.out.println("======= [ordersDao TABLE COMMAND] =======");
             System.out.println("메뉴를 선택 하세요 : ");
-            System.out.print("[1]SELECT, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT : ");
+            System.out.print("[1]주문정보, [2]INSERT, [3]UPDATE, [4]DELETE, [5]EXIT : ");
             int sel = sc.nextInt();
             switch(sel){
                 case 1 :
@@ -24,7 +24,11 @@ public class ProjectMain {
                     dao.ordersInsert();
                     break;
                 case 3 :
+                    dao.ordersUpdate();
+                    break;
                 case 4 :
+                    dao.ordersDelete();
+                    break;
                 case 5 :
                     System.out.println("메뉴를 종료 합니다.");
                     return;
