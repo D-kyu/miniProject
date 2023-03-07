@@ -1,4 +1,4 @@
-package Product.Vo;
+package miniproj.VO;
 
 public class ProdVO {
     private String product_id;

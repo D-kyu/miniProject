@@ -1,7 +1,8 @@
-package miniProject.dao;
+package miniproj.DAO;
 
 import com.kh.jdbc.util.Common;
-import miniProject.vo.ordersVO;
+import miniproj.VO.OrdersVO;
+
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -9,15 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ordersDao {
+public class OrdersDAO {
     Connection conn = null;
     Statement stmt = null;
     PreparedStatement pStmt = null;
     ResultSet rs = null;
     Scanner sc = new Scanner(System.in);
 
-    public List<ordersVO> ordersSelect(){
-        List<ordersVO> list = new ArrayList<>();
+    public List<OrdersVO> ordersSelect(){
+        List<OrdersVO> list = new ArrayList<>();
         try{
             conn = Common.getConnection();
             stmt = conn.createStatement();
@@ -31,7 +32,7 @@ public class ordersDao {
                 Date date = rs.getDate("ORDER_DATE");
                 String payment_method = rs.getNString("PAYMENT_METHOD");
                 String shipping_address = rs.getNString("SHIPPING_ADDRESS");
-                ordersVO vo = new ordersVO(order_id, customer_id, total_cost, date, payment_method, shipping_address);
+                OrdersVO vo = new OrdersVO(order_id, customer_id, total_cost, date, payment_method, shipping_address);
                 list.add(vo);
             }
             Common.close(rs);       // 연결과 역순으로 해제
@@ -43,8 +44,8 @@ public class ordersDao {
         }
         return list;
     }
-    public void ordersSelectPrint(List<ordersVO> list){
-        for(ordersVO e : list){
+    public void ordersSelectPrint(List<OrdersVO> list){
+        for(OrdersVO e : list){
             System.out.println("주문ID : " + e.getOrder_id());
             System.out.println("고객ID : " + e.getCustomer_id());
             System.out.println("총합가격 : " + e.getTotal_cost());

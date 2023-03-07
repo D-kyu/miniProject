@@ -1,4 +1,4 @@
-package Cart.util;
+package miniproj.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

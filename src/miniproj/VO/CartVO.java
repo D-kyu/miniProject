@@ -1,19 +1,21 @@
-package Cart.vo;
+package miniproj.VO;
 
 public class CartVO {
     private String customer_id;
     private String product_id;
     private int quantity;
     private String product_name;
-    private double price;
+    private int price;
+    private int ttl;
 
     public CartVO(String customer_id, String product_id, int quantity,
-                  String product_name, double price) {
+                  String product_name, int price, int ttl) {
         this.customer_id = customer_id;
         this.product_id = product_id;
         this.quantity = quantity;
         this.product_name = product_name;
         this.price = price;
+        this.ttl = ttl;
     }
 
     public String getCustomer_id() {
@@ -48,11 +50,19 @@ public class CartVO {
         this.product_name = product_name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getTtl() {
+        return ttl;
+    }
+
+    public void setTtl(int ttl) {
+        this.ttl = ttl;
     }
 }

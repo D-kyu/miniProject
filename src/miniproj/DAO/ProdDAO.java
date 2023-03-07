@@ -1,12 +1,12 @@
-package Product.Dao;
+package miniproj.DAO;
 
-
-import Product.Vo.ProdVO;
-import Product.util.Common;
+import miniproj.VO.ProdVO;
+import miniproj.util.Common;
 
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class ProdDAO {
     Connection conn = null;
     Statement stmt = null;
+    PreparedStatement pStmt = null;
     ResultSet rs = null;
     Scanner sc = new Scanner(System.in);
 
@@ -93,5 +94,52 @@ public class ProdDAO {
 
 
     }
+
+    public void prodUpdate() {
+        System.out.println("변경할 상품의 ID를 입력 하세요 : ");
+        String pID = sc.next();
+        System.out.print("상품명 : ");
+        String pName = sc.next();
+        System.out.print("가격 : ");
+        int price = sc.nextInt();
+        System.out.print("수량 : ");
+        int stkQuan = sc.nextInt();
+
+        String sqlp = "UPDATE PRODUCTS SET PRODUCT_NAME = ?, PRICE = ?, STOCK_QUANTITY = ? WHERE PRODUCT_ID = ?";
+
+        try{
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sqlp);
+            pStmt.setString(1,pName);
+            pStmt.setInt(2,price);
+            pStmt.setInt(3,stkQuan);
+            pStmt.setString(4,pID);
+            pStmt.executeUpdate();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+    }
+
+    public void empDelete(){
+        System.out.println("삭제할 상품의 ID를 입력 하세요 : ");
+        String pID = sc.next();
+        String sql = "DELETE FROM PRODUCTS WHERE PRODUCT_ID = ?";
+        try{
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1,pID);
+            pStmt.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+    }
 }
+
+
+
 

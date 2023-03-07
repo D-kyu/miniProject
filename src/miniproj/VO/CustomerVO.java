@@ -1,10 +1,8 @@
-package Customers.Vo;
+package miniproj.VO;
 
+import java.util.Date;
 
-import java.sql.Date;
-
-public class CustomerVo {
-    private String customer_id;
+public class CustomerVO { private String customer_id;
     private String customer_name;
     private String password;
     private String gender;
@@ -13,8 +11,8 @@ public class CustomerVo {
     private String address;
     private Date registration_date;
 
-    public CustomerVo(String customer_id, String customer_name, String password, String gender,
-                      String phone_number, String email, String address, Date registration_date) {
+    public CustomerVO(String customer_id, String customer_name, String password, String gender,
+                       String phone_number, String email, String address, Date registration_date) {
         this.customer_id = customer_id;
         this.customer_name = customer_name;
         this.password = password;

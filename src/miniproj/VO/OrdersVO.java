@@ -1,9 +1,9 @@
-package miniProject.vo;
+package miniproj.VO;
 import java.math.BigDecimal;
 import java.sql.Date;
 
 // 주문 정보 테이블
-public class ordersVO {
+public class OrdersVO {
     private String order_id;
     private String customer_id;
     private BigDecimal total_cost;
@@ -11,7 +11,7 @@ public class ordersVO {
     private String payment_method;
     private String shipping_address;
 
-    public ordersVO(String order_id, String customer_id, BigDecimal total_cost, Date order_date,
+    public OrdersVO(String order_id, String customer_id, BigDecimal total_cost, Date order_date,
                     String payment_method, String shipping_address) {
         this.order_id = order_id;
         this.customer_id = customer_id;
